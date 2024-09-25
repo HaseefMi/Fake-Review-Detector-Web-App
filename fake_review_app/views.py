@@ -10,7 +10,7 @@ import keras as ker
 from scipy.sparse import hstack
 import re
 
-dataset = pd.read_csv("C:/Users/hacho/Downloads/FakeReviewDetector/fake reviews dataset.csv")
+dataset = pd.read_csv("Dataset.csv")
 dataset['text'] = dataset['text']
 dataset['text'] = dataset['text'].str.lower().str.replace(r'\s+', ' ', regex=True)
 le = LabelEncoder()
