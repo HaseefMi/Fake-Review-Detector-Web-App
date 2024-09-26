@@ -8,22 +8,23 @@ import { useNavigate } from 'react-router-dom';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function ResultDisplay() {
-    const { result } = useContext(Result);
+    let { result } = useContext(Result);
     const navigate = useNavigate()
     useEffect(() => {
         if (!result) navigate('/')
-    })
+    }) 
     
     const resultPercentage = Math.round(result * 1000) / 10; 
     const humanOdds = 100 - resultPercentage;
+    result = Math.round(result * 1000) / 10
 
     const data = {
-        labels: ['Odds of Being Human Generated', 'Odds of Being Computer Generated'],
+        labels: ['Odds of Being an Authentic Review', 'Odds of Being a Fake Review'],
         datasets: [
             {
                 data: [humanOdds, resultPercentage],
-                backgroundColor: ['#36A2EB', '#FF6384'],
-                hoverBackgroundColor: ['#36A2EB', '#FF6384'],
+                backgroundColor: ['#008000', '#ff0000'],
+                hoverBackgroundColor: ['#2fc72f', '#951e1e'],
             },
         ],
     };
@@ -31,16 +32,27 @@ function ResultDisplay() {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white'
+                },
+            }
+        }
     };
+    
 
     return (
-        <div style={{ width: '300px', height: '300px' }}>
-            <p>There is a {humanOdds}% Chance This Review Was Human Generated & A {resultPercentage}% Chance This was Computer Generated Review</p>
+        <div className='result-display-container'style={{ width: '300px', height: '300px' }}>
+            <h2 style={{textAlign: 'center'}}className='result-title'>Result For Your Review</h2>
+            <br />
+            <h3><span style={{color: 'lightgreen'}}>{humanOdds}%</span> Chance This Review is Authentic</h3>
+            <h3><span style={{color: 'red'}}>{result}%</span> Chance This Review is Fake</h3>
             <Pie data={data} options={options} />
             <br />
-            <p>DISCLAIMER: This model only tells you the likelyhood of a review not being authentic. Like any AI model it can be mistaken. This tool is meant merely as a guide
-            </p>
             <button onClick={() => {navigate('/')}}>Return To Home</button>
+            <p className='disclaimer'>Disclaimer: This model only tells you the likelyhood of a review not being authentic. Like any AI model it can be mistaken. This tool is meant merely as a guide
+            </p>
         </div>
     );
 }

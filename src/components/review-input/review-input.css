@@ -1,0 +1,35 @@
+.review-container {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.text-input {
+    font-family: 'Karla', sans-serif;
+    resize: none;
+    height: 40vh;
+    width: 40vw;
+}
+
+.text-input::placeholder {
+    text-align: center;
+}
+
+.error-msg {
+    margin-bottom: 5px;
+    color: red;
+    font-weight: bold;
+}
+
+@media(max-width: 480px) {
+    .text-input {
+        height: 40vh;
+        width: 80vw;
+    }
+}
+
+@media(max-width: 1024px) {
+    .text-input {
+        height: 15vh;
+        width: 80vw;
+    }
+}

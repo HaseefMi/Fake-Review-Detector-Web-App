@@ -3,16 +3,28 @@ import axios from 'axios'
 import { useState, useContext } from 'react'
 import { Result } from '../../contexts/result-context';
 import { useNavigate } from 'react-router-dom';
+
 function ReviewInput() {
     const [reviewText, setReviewText] = useState(null);
     const [rating, setRating] = useState(null);
     const [category, setCategory] = useState(null);
-    const categories = ['Home & Kitchen 🏠🔪', 'Sports & Outdoors 🏈', 'Electronics 💻', 'Movies & TV 📺', 
-    'Tools & Home Improvment ⚒️', 'Pet Items 🐈', 'E-Books 📜', 'Books 📚', 'Toys & Games 🪀', 
-    'Clothing, Shoes & Jewlery 👕👟💍']
+    const categories = {
+        "Home & Kitchen": "🏠🔪",
+        "Sports & Outdoors": "🏈",
+        "Electronics": "💻",
+        "Movies & TV": "📺",
+        "Tools & Home Improvment": "⚒️",
+        "Pet Items": "🐈",
+        "E-Books": "📜",
+        "Books": "📚",
+        "Toys & Games": "🪀",
+        "Clothing, Shoes & Jewelry": "👕👟"
+    };
     const ratings = []
     const { setResult } = useContext(Result)
     const [error, setError] = useState(null) 
+    const [clickedRating, setClickedRating] = useState(null);
+    const [clickedCategory, setClickedCategory] = useState(null);
     const navigate = useNavigate()
 
     const handleChange = (e) => {
@@ -20,10 +32,11 @@ function ReviewInput() {
     }
     const handleClick = (val, target) => {
         if (target === 'category') {
-            let value = val.replace(/[^\P{Emoji}\s]+$/gu, '').trim();
-            setCategory(value)
+            setCategory(val)
+            setClickedCategory(val)
         } else {
             setRating(val)
+            setClickedRating(val)
         }
     }
 
@@ -57,24 +70,41 @@ function ReviewInput() {
     }
 
     for (let i = 1; i < 6; i++) {
-        ratings.push(<button onClick={() => handleClick(i, 'rating')}key={i}>{i}⭐</button>)
+        ratings.push(<button 
+            style = {{
+                backgroundColor: clickedRating === i ? 'black' : 'white',
+                color: clickedRating === i ? 'white' : 'black'
+            }}
+            onClick={() => handleClick(i, 'rating')}
+            key={i}>{i}⭐</button>)
     }
 
     return (
-        <div>
+        <div className='container'>
+            <h1>Fake Review Checker</h1>
             <h2>Enter Review Text</h2>
-            <textarea onChange={handleChange}/>
+            {error === 'Please Enter Review Text' ? <div className='error-msg'>{error}</div> : <></>}
+            <textarea placeholder='Enter Review Text' className='text-input'onChange={handleChange}/>
+            <div className='review-container'>
             <h2>What's the Review Category?</h2>
-            {categories.map((val, index) => (
-                <button key={index} onClick={() => handleClick(val, 'category')}>{val}</button>
-            ))}
+            {error === 'Please Select a Category' ? <div className='error-msg'>{error}</div> : <></>}
+            {Object.entries(categories).map(([val, emoji]) => (
+            <button 
+            style={{
+                backgroundColor: clickedCategory === val ? 'black' : 'white',
+                color: clickedCategory === val ? 'white' : 'black'}} key={val}
+                onClick={() => handleClick(val, 'category')}>
+            {val} {emoji}
+            </button>))}
+            </div>
             <br />
             <h2>What's The Review's Rating?</h2>
+            {error === 'Please Select a Rating' ? <div className='error-msg'>{error}</div> : <></>}
             {ratings}
             <br />
-            <button type='button' onClick={handleSubmit}>Check Review</button>
             <br />
-            {error}
+            <button style={{padding: '10px'}}type='button' onClick={handleSubmit}>Check Review</button>
+            <br />
         </div>
     )
 }

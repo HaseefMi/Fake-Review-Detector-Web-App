@@ -2,6 +2,7 @@ import ReviewInput from "./components/review-input/review-input";
 import ResultDisplay from "./components/result-display/result-display";
 import { Routes, Route } from 'react-router-dom'
 import { ResultProvider } from "./contexts/result-context";
+import './App.css'
 function App() {
   return (
     <div>
