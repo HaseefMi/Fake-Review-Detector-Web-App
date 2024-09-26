@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-
+import ReviewInput from "./components/review-input/review-input";
+import ResultDisplay from "./components/result-display/result-display";
+import { Routes, Route } from 'react-router-dom'
+import { ResultProvider } from "./contexts/result-context";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ResultProvider>
+      <Routes>
+        <Route path='/' element={<ReviewInput />}/>
+        <Route path='/result' element={<ResultDisplay />} />
+      </Routes>
+      </ResultProvider>
     </div>
   );
 }
