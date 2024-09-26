@@ -59,4 +59,5 @@ def recieve_input(request):
             return Response({'odds': odds[0][0], 'prediction': prediction}, status=status.HTTP_200_OK)
 
         except Exception as e:
+            print(str(e))
             return Response(f'Error processing data and/or making prediction: {str(e)}', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
